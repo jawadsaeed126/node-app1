@@ -17,12 +17,13 @@ phases:
       - docker tag $IMAGE_NAME:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
-    commands:
-      - echo "Build completed on $(date)"
-      - echo "Pushing the Docker image..."
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo "Writing image definitions file..."
-      - printf '[{"name":"%s","imageUri":"%s"}]' $IMAGE_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+  commands:
+    - echo "Build completed on $(date)"
+    - echo "Pushing the Docker image..."
+    - docker push $REPOSITORY_URI:$IMAGE_TAG || exit 1 # Exit if push fails
+    - echo "Writing image definitions file..."
+    - printf '[{"name":"%s","imageUri":"%s"}]' $IMAGE_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+    - cat imagedefinitions.json # For debugging
 
 artifacts:
   files:
