@@ -4,26 +4,27 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - $(aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com)
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/my-ecr-repository
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      
+      - IMAGE_NAME=my-service  # Define the image name here to ensure consistency
+
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker-compose build
-      - docker tag my-service:latest $REPOSITORY_URI:$IMAGE_TAG
-      # Replace "my-service" with the name of your service in the docker-compose.yml
-      
+      - docker tag $IMAGE_NAME:latest $REPOSITORY_URI:$IMAGE_TAG
+      # Ensure the IMAGE_NAME matches the service name and tag used in your docker-compose.yml
+
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"my-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-      # Replace "my-service" with your service name. This step is necessary for ECS deployments.
+      - printf '[{"name":"%s","imageUri":"%s"}]' $IMAGE_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      # Ensure the service name in the imagedefinitions.json matches your ECS service's container name
 
 artifacts:
   files:
