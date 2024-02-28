@@ -1,8 +1,8 @@
 version: '3.8'
 services:
   app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - PORT=3000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: my-service:latest  # Explicitly define the image name
+
