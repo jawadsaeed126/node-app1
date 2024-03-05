@@ -1,28 +1,10 @@
-#version: '3.8'
-#services:
-#  app:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    image: my-service:latest  # Explicitly define the image name
-
-
-
-#version: '3'
-#services:
-#  app:
-#    build: .
-#    ports:
-#      - "3000:3000"
-
-
-
-version: '3'
+ version: '3'
 services:
-  app:
+  app1: # Changed from 'app' to 'app1'
     build:
       context: .
       dockerfile: Dockerfile
-    image: my-service:latest
+    image: my-service-app1:latest # Changed image name for clarity
     ports:
-      - "3000:3000"
+      - "3000:3000" # This port mapping is fine if only running one app at a time on the host
+     
