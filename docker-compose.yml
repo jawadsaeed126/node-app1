@@ -1,8 +1,28 @@
-version: '3.8'
+#version: '3.8'
+#services:
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    image: my-service:latest  # Explicitly define the image name
+
+
+
+#version: '3'
+#services:
+#  app:
+#    build: .
+#    ports:
+#      - "3000:3000"
+
+
+
+version: '3'
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    image: my-service:latest  # Explicitly define the image name
-
+    image: my-service:latest
+    ports:
+      - "3000:3000"
