@@ -13,4 +13,4 @@ aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --usernam
 docker pull $REPOSITORY_URI:latest
 
 # Run the Docker image as a container
-docker run -d -p 3000:3000 --name container-app1 $REPOSITORY_URI:latest
+docker run -d -p 3000:3000 $REPOSITORY_URI:latest
