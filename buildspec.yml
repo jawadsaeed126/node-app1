@@ -1,31 +1,40 @@
 version: 0.2
-
-phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 099199746132.dkr.ecr.eu-west-1.amazonaws.com
-      - REPOSITORY_URI=099199746132.dkr.ecr.eu-west-1.amazonaws.com/private-ecr-repository-app1-node-api1
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo Logging in to Amazon ECR....
+      - aws --version
+      #- $(aws ecr get-login --region ap-south-1 --no-include-email)
+      - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 099199746132.dkr.ecr.eu-west-1.amazonaws.com
+      - # Replace with this to your repository URI
+      - REPOSITORY_URI="099199746132.dkr.ecr.eu-west-1.amazonaws.com/private-ecr-repository-app1-node-api1"
+      - IMAGE_TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
 
   build:
     commands:
-      
+      - echo Build started on `date`
       - echo Building the Docker image...
+      # building images
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
-      - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
+      # - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo Pushing the Docker image...
+      - echo Build completed on `date`
+      - echo pushing to repo
+      # - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - docker push $REPOSITORY_URI:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"%s","imageUri":"%s"}]' $IMAGE_REPO_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      # Give your container name
+      - DOCKER_CONTAINER_NAME="demo-node-app-1-task-definition-container-api1"
+      # outputs
+      - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo $DOCKER_CONTAINER_NAME
+      - echo printing imagedefinitions.json
+      - cat imagedefinitions.json
 
 artifacts:
   files:
-    - '**/*'
+    - imagedefinitions.json
 
 
   
