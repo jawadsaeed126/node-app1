@@ -2,12 +2,17 @@ pipeline {
     agent any
 
     stages {
-        stage('Cloning the code') {
+        stage('Cloning code') {
             steps {
                 echo 'Hello World'
             }
         }
-        stage('Building the Docker image') {
+        stage('Running Unit Tests') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+        stage('Building Docker image') {
             steps {
                 echo 'Hello World'
             }
