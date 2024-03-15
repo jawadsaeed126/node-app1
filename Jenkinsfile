@@ -22,5 +22,10 @@ pipeline {
                 echo 'Hello World'
             }
         }
+        stage('Email Notifications') {
+            steps {
+                echo 'Hello World'
+            }
+        }
     }
 }
