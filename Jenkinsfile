@@ -1,15 +1,22 @@
 pipeline {
     agent any
     environment {
+        // Define static environment variables
         AWS_ACCOUNT_ID = '099199746132'
-		AWS_DEFAULT_REGION = 'eu-west-1'
+        AWS_DEFAULT_REGION = 'eu-west-1'
         ECR_REPOSITORY = 'node-app-ecr'
-        IMAGE_TAG = "${BUILD_NUMBER}" // Use build number for unique tags
         ECS_CLUSTER_NAME = 'Demo-Node-App-Cluster'
         ECS_SERVICE_NAME = 'Demo-Node-App-Service'
-        // Assuming AWS_ACCOUNT_ID is available as an environment variable or is hard-coded
     }
     stages {
+        stage('Prepare') {
+            steps {
+                script {
+                    // Dynamically define IMAGE_TAG based on BUILD_NUMBER
+                    env.IMAGE_TAG = "${BUILD_NUMBER}"
+                }
+            }
+        }
         stage('Checkout Code') {
             steps {
                 checkout scm: [
@@ -57,7 +64,8 @@ pipeline {
     }
     post {
         always {
-            // Add post-build actions here, like cleanup
+            // Added a simple echo step to ensure the block is not empty
+            echo 'Cleanup or notification steps can be added here.'
         }
     }
 }
