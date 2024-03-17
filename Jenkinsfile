@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Dynamically define IMAGE_TAG based on BUILD_NUMBER
-                    env.IMAGE_TAG = "$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
+                    IMAGE_TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
                 }
             }
         }
