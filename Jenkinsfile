@@ -29,14 +29,6 @@ pipeline {
                 ]
             }
         }
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build your Docker image with the build number as tag
-                    sh "docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG} ."
-                }
-            }
-        }
         stage('Login to ECR') {
             steps {
                 script {
@@ -45,6 +37,15 @@ pipeline {
                 }
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build your Docker image with the build number as tag
+                    sh "docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG} ."
+                }
+            }
+        }
+        
         stage('Push Docker Image to ECR') {
             steps {
                 script {
