@@ -66,7 +66,6 @@ pipeline {
     post {
         always {
             // Added a simple echo step to ensure the block is not empty
-            //
             echo 'Cleanup or notification steps can be added here.'
         }
     }
