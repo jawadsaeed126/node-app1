@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         // Define static environment variables
+        DOCKER_BUILDKIT = 1
         AWS_ACCOUNT_ID = '099199746132'
         AWS_DEFAULT_REGION = 'eu-west-1'
         ECR_REPOSITORY = 'node-app-ecr'
