@@ -12,12 +12,14 @@ pipeline {
         stage('Prepare') {
             steps {
                 script {
-    // Use the Groovy 'sh' step to execute shell commands and capture the output
-    def timestamp = sh(script: "date +%Y-%m-%d.%H.%M.%S", returnStdout: true).trim()
-    def shortSha = sh(script: "echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8", returnStdout: true).trim()
-    IMAGE_TAG = "${timestamp}.${shortSha}"
-}
-
+                    // Use Groovy's 'sh' step to execute shell commands and capture the output
+                    def timestamp = sh(script: "date +%Y-%m-%d.%H.%M.%S", returnStdout: true).trim()
+                    // Use Git to get the short SHA of the last commit
+                    def shortSha = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+                    // Set the IMAGE_TAG environment variable dynamically
+                    env.IMAGE_TAG = "${timestamp}.${shortSha}"
+                    echo "IMAGE_TAG is set to ${env.IMAGE_TAG}"
+                }
             }
         }
         stage('Checkout Code') {
@@ -36,15 +38,15 @@ pipeline {
             steps {
                 script {
                     // Login to ECR
-                    sh "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                    sh "aws ecr get-login-password --region ${env.AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_DEFAULT_REGION}.amazonaws.com"
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build your Docker image with the build number as tag
-                    sh "docker build -t ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG} ."
+                    // Build the Docker image with the dynamically set tag
+                    sh "docker build -t ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_DEFAULT_REGION}.amazonaws.com/${env.ECR_REPOSITORY}:${env.IMAGE_TAG} ."
                 }
             }
         }
@@ -52,8 +54,8 @@ pipeline {
         stage('Push Docker Image to ECR') {
             steps {
                 script {
-                    // Push the Docker image to your ECR repository
-                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}"
+                    // Push the Docker image to the ECR repository
+                    sh "docker push ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_DEFAULT_REGION}.amazonaws.com/${env.ECR_REPOSITORY}:${env.IMAGE_TAG}"
                 }
             }
         }
@@ -61,7 +63,7 @@ pipeline {
             steps {
                 script {
                     // Update the ECS service to use the new Docker image
-                    sh "aws ecs update-service --cluster ${ECS_CLUSTER_NAME} --service ${ECS_SERVICE_NAME} --force-new-deployment"
+                    sh "aws ecs update-service --cluster ${env.ECS_CLUSTER_NAME} --service ${env.ECS_SERVICE_NAME} --force-new-deployment"
                 }
             }
         }
