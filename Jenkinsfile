@@ -6,7 +6,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'eu-west-1'
         ECR_REPOSITORY = 'node-app-ecr'
         ECS_CLUSTER_NAME = 'Demo-Node-App-Cluster'
-        ECS_SERVICE_NAME = 'Demo-Node-App-Service'
+        ECS_SERVICE_NAME = 'node-app-task-definition-test'
     }
     stages {
         stage('Prepare') {
