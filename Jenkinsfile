@@ -13,11 +13,10 @@ pipeline {
             steps {
                 script {
                     // Use Groovy's 'sh' step to execute shell commands and capture the output
-                    def timestamp = sh(script: "date +%Y-%m-%d.%H.%M.%S", returnStdout: true).trim()
                     // Use Git to get the short SHA of the last commit
                     def shortSha = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-                    // Set the IMAGE_TAG environment variable dynamically
-                    env.IMAGE_TAG = "${timestamp}.${shortSha}"
+                    // Set the IMAGE_TAG environment variable to 'latest' and append the short SHA
+                    env.IMAGE_TAG = "latest.${shortSha}"
                     echo "IMAGE_TAG is set to ${env.IMAGE_TAG}"
                 }
             }
