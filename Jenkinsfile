@@ -12,9 +12,12 @@ pipeline {
         stage('Prepare') {
             steps {
                 script {
-                    // Dynamically define IMAGE_TAG based on BUILD_NUMBER
-                    IMAGE_TAG="$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
-                }
+    // Use the Groovy 'sh' step to execute shell commands and capture the output
+    def timestamp = sh(script: "date +%Y-%m-%d.%H.%M.%S", returnStdout: true).trim()
+    def shortSha = sh(script: "echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8", returnStdout: true).trim()
+    IMAGE_TAG = "${timestamp}.${shortSha}"
+}
+
             }
         }
         stage('Checkout Code') {
