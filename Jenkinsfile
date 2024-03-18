@@ -45,8 +45,8 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image with the dynamically set tag
-                    //sh "docker build -t ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_DEFAULT_REGION}.amazonaws.com/${env.ECR_REPOSITORY}:${env.IMAGE_TAG} ."
-                    sh "docker build -t node-app-ecr ."
+                    sh "docker build -t ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_DEFAULT_REGION}.amazonaws.com/${env.ECR_REPOSITORY}:${env.IMAGE_TAG} ."
+                    
                 }
             }
         }
@@ -55,9 +55,7 @@ pipeline {
             steps {
                 script {
                     // Push the Docker image to the ECR repository
-                    //sh "docker push ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_DEFAULT_REGION}.amazonaws.com/${env.ECR_REPOSITORY}:${env.IMAGE_TAG}"
-                    sh "docker tag node-app-ecr:latest 099199746132.dkr.ecr.eu-west-1.amazonaws.com/node-app-ecr:latest"
-                    sh "docker push 099199746132.dkr.ecr.eu-west-1.amazonaws.com/node-app-ecr:latest"
+                    sh "docker push ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_DEFAULT_REGION}.amazonaws.com/${env.ECR_REPOSITORY}:${env.IMAGE_TAG}"
                 }
             }
         }
