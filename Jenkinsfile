@@ -4,7 +4,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'eu-west-1'
         ECR_REPOSITORY = 'node-app-ecr'
         ECS_CLUSTER_NAME = 'Demo-Node-App-Cluster'
-        ECS_SERVICE_NAME = 'node-service'
+        ECS_SERVICE_NAME = 'node-service-app'
     }
     agent any
 
@@ -19,10 +19,7 @@ pipeline {
         stage('Build and Tag Docker Image') {
             steps {
                 script {
-                    
-                    GIT_COMMIT = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-
-                    
+                     
                     IMAGE_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
 
                     
