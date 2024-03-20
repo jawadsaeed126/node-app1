@@ -1,4 +1,5 @@
 # FROM 099199746132.dkr.ecr.eu-west-1.amazonaws.com/dockerfile-node-image-repository
+
 FROM node:14 as build
 
 WORKDIR /usr/src/app
