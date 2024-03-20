@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 // Define a route for GET requests to the root URL ("/")
 app.get('/', (req, res) => {
   // Send a response containing a message
-  res.send('Hello from App1!');
+  res.send('Hello from App1!... How are you?');
 });
 
 // Define a route for GET requests to "/api1"
