@@ -14,6 +14,6 @@ COPY package*.json ./
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 5000
 
-CMD ["node", "app.js"]
+CMD ["node", "index.js"]
