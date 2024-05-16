@@ -10,33 +10,14 @@ const port = 3000;
 
 
 
-// Specify your frontend URL here
-const allowedOrigins = [
-    //'http://localhost:3000', // Local development URL
-    //'http://ecs-LoadBala-EHtVQnf0MWFR-986638486.eu-west-1.elb.amazonaws.com', // ELB URL for production frontend
-    'http://frontend.development.internal' // Service discovery endpoint
-];
 
 
-// CORS options setup
-const corsOptions = {
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        // Check if the origin is in the list of allowed origins
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true); // Allow the request
-        } else {
-            callback(new Error('Not allowed by CORS'), false); // Block the request
-        }
-    },
-    optionsSuccessStatus: 200 // For legacy browsers that choke on 204
-};
-
-app.use(cors(corsOptions));
+const allowedOrigins = ['http://frontend.development.internal:80/api/items']; // Service discovery endpoint
 
 
-//app.use(cors());
+
+
+app.use(cors());
 app.use(bodyParser.json());
 
  
