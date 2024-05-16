@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
  
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 
 
@@ -17,12 +17,27 @@ const allowedOrigins = [
     'http://frontend.development.internal' // Service discovery endpoint
 ];
 
- 
 
-app.use(cors());
+// CORS options setup
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        // Check if the origin is in the list of allowed origins
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true); // Allow the request
+        } else {
+            callback(new Error('Not allowed by CORS'), false); // Block the request
+        }
+    },
+    optionsSuccessStatus: 200 // For legacy browsers that choke on 204
+};
+
+app.use(cors(corsOptions));
 
 
-app.use(bodyParser.json());
+//app.use(cors());
+//app.use(bodyParser.json());
 
  
 
