@@ -13,7 +13,8 @@ const port = 5000;
 // Specify your frontend URL here
 const allowedOrigins = [
     'http://localhost:3000', // Local development URL
-    'http://ecs-LoadBala-EHtVQnf0MWFR-986638486.eu-west-1.elb.amazonaws.com' // ELB URL for production frontend
+    'http://ecs-LoadBala-EHtVQnf0MWFR-986638486.eu-west-1.elb.amazonaws.com', // ELB URL for production frontend
+    'http://frontend.development.internal' // Service discovery endpoint
 ];
 
  
