@@ -12,7 +12,7 @@ const port = 3000;
 
 
 
-const allowedOrigins = ['http://frontend.development.internal:80/api/items']; // Service discovery endpoint
+const allowedOrigins = ['http://frontend.development.internal']; // Service discovery endpoint
 
 
 
