@@ -27,7 +27,7 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       
      
-      - printf '[{"name":"nodejs-backend-container","imageUri":"%s:%s"}]' $REPOSITORY_URI $IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"nodejs-backend-container","imageUri":"'$REPOSITORY_URI:$IMAGE_TAG'"}]' $REPOSITORY_URI $IMAGE_TAG > imagedefinitions.json
       
       - cat imagedefinitions.json
 
