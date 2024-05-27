@@ -1,6 +1,6 @@
-# FROM node:14 as build
+FROM node:14 as build
 
-FROM 099199746132.dkr.ecr.eu-west-1.amazonaws.com/node-image-for-using-in-dockerfile:latest
+#FROM 099199746132.dkr.ecr.eu-west-1.amazonaws.com/node-image-for-using-in-dockerfile:latest
 
 WORKDIR /usr/src/app
 
